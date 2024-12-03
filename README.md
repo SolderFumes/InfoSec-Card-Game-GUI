@@ -1,1 +1,2 @@
 # InfoSec-Card-Game-GUI
+This is a refactoring of the previously CLI-based Infosec card game on this github account, I am now implementing SDL2 (following the Let's Make Games Tutorial on YouTube). I wasn't too sure about how doable this was until I got a decent amount of work done, so this is a very large jump from the old repository. I may reuse old code from that repository but as of the creation of this one I haven't gotten to that point. 
