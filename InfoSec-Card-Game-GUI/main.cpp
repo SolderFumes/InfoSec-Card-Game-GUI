@@ -20,7 +20,7 @@ int main(int argc, char* argv[]) {
 		//marking when we started rendering a frame
 		frameStart = SDL_GetTicks();
 
-		
+
 		game->handleEvents();
 		game->update();
 		game->render();
@@ -37,7 +37,6 @@ int main(int argc, char* argv[]) {
 		}
 
 	}
-	
 	game->clean();
 
 	return 0;

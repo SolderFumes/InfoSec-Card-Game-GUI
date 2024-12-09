@@ -52,9 +52,10 @@ class Entity {
 public:
 	void update() {
 		for (auto& c : components) c->update();
+	};
+	void draw() {
 		for (auto& c : components) c->draw();
 	};
-	void draw() {};
 	
 	bool isActive() const { return active; };
 	//any given component can use it's reference to it's owner to call the entity's destroy function

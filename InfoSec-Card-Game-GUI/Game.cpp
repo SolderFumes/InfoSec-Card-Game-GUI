@@ -1,15 +1,13 @@
 #include "Game.h"
 #include "TextureManager.h"
-#include "GameObject.h"
 #include "Map.h"
-
-#include "ECS.h"
 #include "Components.h"
+#include "Button.h"
 #include <iostream>
-
-GameObject* cardTexture;
-GameObject* cardTexture2;
+ 
 Map* map;
+Mouse* mouse;
+Button* startButton;
 
 SDL_Renderer* Game::renderer = nullptr; 
 
@@ -53,11 +51,19 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	cardTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);*/
 	//Replaced the above with the following function
-	cardTexture = new GameObject("wifi.png", 0, 0);
-	cardTexture2 = new GameObject("wifi.png", 100, 0);
 	map = new Map();
+	mouse = new Mouse();
+	startButton = new Button();
+	//this will be how we select which texture to use
+	//a higher y value will select a different tile when sprite sheet is oriented correctly
+	startButton->srcRect.y = 0;
+	startButton->destRect.x = width / 2;
+	startButton->destRect.y = height / 2;
 	
-	newPlayer.addComponent<PositionComponent>();
+	//ecs implementation
+	newPlayer.addComponent<PositionComponent>(100, 500);
+	newPlayer.getComponent<PositionComponent>().setPos(150, 150);
+	newPlayer.addComponent<SpriteComponent>("wifi.png");
 
 }
 
@@ -68,6 +74,12 @@ void Game::handleEvents() {
 	case SDL_QUIT:
 		isRunning = false;
 		break;
+	case SDL_MOUSEBUTTONUP:
+		if (event.button.button == SDL_BUTTON_LEFT) {
+			if (startButton->isSelected) {
+				std::cout << "Start button clicked!" << std::endl;
+			}
+		}
 	default:
 		break;
 	}
@@ -77,11 +89,14 @@ void Game::update() {
 	Not planning on actually updating things directly here, 
 	but calling the update() functions of other objects
 	*/
-	cardTexture->update();
-	cardTexture2->update();
+	manager.refresh();
+	startButton->update(*mouse);
+	mouse->update();
 	manager.update();
-	std::cout << newPlayer.getComponent<PositionComponent>().x() << "," <<
-		newPlayer.getComponent<PositionComponent>().y() << std::endl;
+
+	/*if (newPlayer.getComponent<PositionComponent>().x() > 100) {
+		newPlayer.getComponent<SpriteComponent>().setTex("water.png");
+	}*/
 }
 void Game::render() {
 	SDL_RenderClear(renderer);
@@ -91,8 +106,10 @@ void Game::render() {
 	//using null for both of these just puts the whole image on the whole screen :)
 
 	map->drawMap();
-	cardTexture->render();
-	cardTexture2->render();
+	manager.draw();
+	startButton->draw();
+	//draw the mouse last so it's on top of everything!
+	mouse->draw();
 	SDL_RenderPresent(renderer);
 
 }
