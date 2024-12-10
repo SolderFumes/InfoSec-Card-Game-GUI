@@ -3,6 +3,7 @@
 
 #include "SDL.h"
 #include "SDL_image.h"
+#include "SDL_ttf.h"
 
 /*
 	Step 1) Handle inputs
@@ -24,6 +25,8 @@ public:
 	bool running() { return isRunning; };
 
 	static SDL_Renderer* renderer;
+	static int widthSegment;
+	static int heightSegment;
 
 private:
 	bool isRunning;

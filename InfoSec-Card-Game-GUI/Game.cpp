@@ -3,16 +3,21 @@
 #include "Map.h"
 #include "Components.h"
 #include "Button.h"
+#include <cmath>
 #include <iostream>
  
 Map* map;
 Mouse* mouse;
 Button* startButton;
-
-SDL_Renderer* Game::renderer = nullptr; 
-
 Manager manager;
-auto& newPlayer(manager.addEntity());
+Entity& player1(manager.addEntity());
+Entity& player2(manager.addEntity());
+Entity& deck(manager.addEntity());
+
+SDL_Renderer* Game::renderer = nullptr;
+//set these static variables to default values
+int Game::widthSegment = 0;
+int Game::heightSegment = 0;
 
 Game::Game() {
 
@@ -22,6 +27,9 @@ Game::~Game() {
 }
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
+	Game::widthSegment = width / 10;
+	Game::heightSegment = height / 10;
+	TTF_Init();
 	int flags = 0;
 	if (fullscreen) {
 		flags = SDL_WINDOW_FULLSCREEN;
@@ -47,11 +55,6 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 	
-	/*SDL_Surface* tmpSurface = IMG_Load("wifi.png");
-	cardTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);*/
-	//Replaced the above with the following function
-	map = new Map();
 	mouse = new Mouse();
 	startButton = new Button();
 	//this will be how we select which texture to use
@@ -61,10 +64,17 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	startButton->destRect.y = height / 2;
 	
 	//ecs implementation
-	newPlayer.addComponent<PositionComponent>(100, 500);
-	newPlayer.getComponent<PositionComponent>().setPos(150, 150);
-	newPlayer.addComponent<SpriteComponent>("wifi.png");
+	player1.addComponent<PositionComponent>();
+	player1.getComponent<PositionComponent>().setPos((int)(widthSegment * 4.5), heightSegment * 8);
+	//!TODO implement player method to generate a texture to use for the healthbar 
+	//! OR make health component
+	player1.addComponent<SpriteComponent>(96, 96, "healthBar.png");
+	player1.addComponent<PlayerInfoComponent>(250, 100, "John Pork");
 
+	int deckWidth = 128;
+	int deckHeight = 192;
+	deck.addComponent<PositionComponent>(widthSegment * 1, heightSegment * 4.5 - (deckHeight / 2));
+	deck.addComponent<SpriteComponent>(deckWidth, deckHeight, "card.png");
 }
 
 void Game::handleEvents() {
@@ -105,7 +115,6 @@ void Game::render() {
 	//and the second expects where  you want to draw it to. 
 	//using null for both of these just puts the whole image on the whole screen :)
 
-	map->drawMap();
 	manager.draw();
 	startButton->draw();
 	//draw the mouse last so it's on top of everything!

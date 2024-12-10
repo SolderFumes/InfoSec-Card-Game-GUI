@@ -65,6 +65,9 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PlayerInfoComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="dirt.png">
@@ -85,5 +88,14 @@
     <Image Include="spriteSheet.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="healthBar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="card.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="binchrt.ttf" />
   </ItemGroup>
 </Project>
