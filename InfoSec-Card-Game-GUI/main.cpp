@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <iostream>
 
 Game* game = nullptr;
 
@@ -12,7 +13,8 @@ int main(int argc, char* argv[]) {
 	
 	game = new Game();
 
-	game->init("InfoSec Card Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1200, 960, false);
+	game->init("InfoSec Card Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1920, 1080, false);
+	std::cout << "Game initialized!" << std::endl;
 
 	while (game->running()) {
 		

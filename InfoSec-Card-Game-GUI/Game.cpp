@@ -3,12 +3,16 @@
 #include "Map.h"
 #include "Components.h"
 #include "Button.h"
+#include "CardVector.h"
+#include "DefenseCard.h"
 #include <cmath>
 #include <iostream>
- 
+
 Map* map;
 Mouse* mouse;
 Button* startButton;
+CardVector* player1Active;
+DefenseCard card1, card2, card3, card4;
 Manager manager;
 Entity& player1(manager.addEntity());
 Entity& player2(manager.addEntity());
@@ -75,6 +79,17 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	int deckHeight = 192;
 	deck.addComponent<PositionComponent>(widthSegment * 1, heightSegment * 4.5 - (deckHeight / 2));
 	deck.addComponent<SpriteComponent>(deckWidth, deckHeight, "card.png");
+
+	player1Active = new CardVector(4, heightSegment * 10 - 288);
+	card1.setTex("testHand.png");
+	card2.setTex("testHand.png");
+	card3.setTex("testHand.png");
+	card4.setTex("testHand.png");
+	player1Active->addCard(card1);
+	player1Active->addCard(card2);
+	player1Active->addCard(card3);
+	player1Active->addCard(card4);
+
 }
 
 void Game::handleEvents() {
@@ -116,6 +131,7 @@ void Game::render() {
 	//using null for both of these just puts the whole image on the whole screen :)
 
 	manager.draw();
+	player1Active->draw();
 	startButton->draw();
 	//draw the mouse last so it's on top of everything!
 	mouse->draw();

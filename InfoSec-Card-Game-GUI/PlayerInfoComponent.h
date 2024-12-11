@@ -30,14 +30,14 @@ public:
 		bandwidth += incrementBy;
 	}
 
-	void init() {
+	void init() override {
 		sprite = &entity->getComponent<SpriteComponent>();
 		position = &entity->getComponent<PositionComponent>();
 	};
-	void update() {
+	void update() override {
 		
 	};
-	void draw() {
+	void draw() override {
 		//draw a different texture based on the health
 
 		// this is the color in rgb format,

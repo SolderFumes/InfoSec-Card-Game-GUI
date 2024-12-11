@@ -33,6 +33,15 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CardVector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Card.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DefenseCard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Components.h">
@@ -68,6 +77,15 @@
     <ClInclude Include="PlayerInfoComponent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CardVector.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Card.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DefenseCard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="dirt.png">
@@ -92,6 +110,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="card.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="testHand.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

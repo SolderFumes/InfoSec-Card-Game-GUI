@@ -2,6 +2,7 @@
 #define SPRITE_COMPONENT_H
 
 #include "Components.h"
+#include "TextureManager.h"
 #include "SDL.h"
 
 class SpriteComponent : public Component {

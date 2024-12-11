@@ -134,6 +134,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Card.cpp" />
+    <ClCompile Include="CardVector.cpp" />
+    <ClCompile Include="DefenseCard.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
@@ -142,7 +145,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Button.h" />
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="CardVector.h" />
     <ClInclude Include="Components.h" />
+    <ClInclude Include="DefenseCard.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -160,6 +166,7 @@
     <Image Include="grass.png" />
     <Image Include="healthBar.png" />
     <Image Include="spriteSheet.png" />
+    <Image Include="testHand.png" />
     <Image Include="water.png" />
     <Image Include="wifi.png" />
   </ItemGroup>

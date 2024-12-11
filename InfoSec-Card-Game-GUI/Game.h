@@ -31,6 +31,7 @@ public:
 private:
 	bool isRunning;
 	SDL_Window* window;
+	
 };
 
 #endif /* GAME_H */
