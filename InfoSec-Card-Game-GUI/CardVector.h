@@ -33,8 +33,8 @@ private:
 	std::vector<Button> buttons;
 	size_t maxSize;
 	int xpos, ypos;
-	const int cardWidth = 120;
-	const int cardHeight = 180;
+	const int cardWidth = 150;
+	const int cardHeight = 225;
 	const int cardGap = 50;
 };
 

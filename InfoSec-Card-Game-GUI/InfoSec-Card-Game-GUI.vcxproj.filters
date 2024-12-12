@@ -18,13 +18,7 @@
     <ClCompile Include="Game.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Map.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TextureManager.cpp">
@@ -48,12 +42,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
@@ -85,34 +73,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="dirt.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="grass.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="water.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="wifi.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="cursor.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="spriteSheet.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="healthBar.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="card.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="testHand.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="attackCard.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="endTurn.png">
@@ -125,6 +86,21 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="winScreen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sha256.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="eternalBlue.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="firewall.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="SQLi.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="ssrf.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

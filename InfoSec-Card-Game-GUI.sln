@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163 d17.12
+VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InfoSec-Card-Game-GUI", "InfoSec-Card-Game-GUI\InfoSec-Card-Game-GUI.vcxproj", "{899F137C-E3F1-4423-914A-7789DE6D8CD9}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "InfosecCardGameSetup", "InfosecCardGameSetup\InfosecCardGameSetup.vdproj", "{8573B97D-2009-4244-A9A1-61EB21C70FB3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,12 @@ Global
 		{899F137C-E3F1-4423-914A-7789DE6D8CD9}.Release|x64.Build.0 = Release|x64
 		{899F137C-E3F1-4423-914A-7789DE6D8CD9}.Release|x86.ActiveCfg = Release|Win32
 		{899F137C-E3F1-4423-914A-7789DE6D8CD9}.Release|x86.Build.0 = Release|Win32
+		{8573B97D-2009-4244-A9A1-61EB21C70FB3}.Debug|x64.ActiveCfg = Debug
+		{8573B97D-2009-4244-A9A1-61EB21C70FB3}.Debug|x86.ActiveCfg = Debug
+		{8573B97D-2009-4244-A9A1-61EB21C70FB3}.Release|x64.ActiveCfg = Release
+		{8573B97D-2009-4244-A9A1-61EB21C70FB3}.Release|x64.Build.0 = Release
+		{8573B97D-2009-4244-A9A1-61EB21C70FB3}.Release|x86.ActiveCfg = Release
+		{8573B97D-2009-4244-A9A1-61EB21C70FB3}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

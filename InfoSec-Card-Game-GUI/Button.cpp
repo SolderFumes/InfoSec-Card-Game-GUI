@@ -6,8 +6,8 @@ Button::Button(SDL_Texture* newTex) {
 	//tex = spriteSheet;
 	tex = newTex;
 	//this is the size of each tile in my PyxelEdit spriteSheet
-	srcRect.h = 48;
-	srcRect.w = 32;
+	srcRect.h = 96;
+	srcRect.w = 64;
 	//I will always be starting on the left of a texture, but I might be moving the Y if I am selecting 
 	//different sprite on the spriteSheet yk
 	srcRect.x = 0;

@@ -20,7 +20,7 @@ public:
 		// this is the color in rgb format,
 		// maxing out all would give you the color white,
 		// and it will be your text's color
-		SDL_Color Black = { 0, 0, 0, 255 };
+		SDL_Color White = { 255, 255, 255, 255 };
 
 		// as TTF_RenderText_Solid could only be used on
 		// SDL_Surface then you have to create the surface first
@@ -28,7 +28,7 @@ public:
 		if (font == NULL) {
 			std::cout << "Error opening font in TextComponent" << std::endl;
 		}
-		SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text, Black);
+		SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text, White);
 		if (surfaceMessage == NULL) {
 			std::cout << "Error creating surfaceMessage in TextComponent." << std::endl;
 			std::cout << TTF_GetError() << std::endl;
@@ -50,7 +50,7 @@ public:
 		// this is the color in rgb format,
 		// maxing out all would give you the color white,
 		// and it will be your text's color
-		SDL_Color Black = { 0, 0, 0, 255 };
+		SDL_Color White = { 255, 255, 255, 255 };
 
 		// as TTF_RenderText_Solid could only be used on
 		// SDL_Surface then you have to create the surface first
@@ -58,7 +58,7 @@ public:
 		if (font == NULL) {
 			std::cout << "Error opening font in TextComponent" << std::endl;
 		}
-		SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text, Black);
+		SDL_Surface* surfaceMessage = TTF_RenderText_Solid(font, text, White);
 		if (surfaceMessage == NULL) {
 			std::cout << "Error creating surfaceMessage in TextComponent." << std::endl;
 			std::cout << TTF_GetError() << std::endl;

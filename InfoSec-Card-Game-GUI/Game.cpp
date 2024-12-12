@@ -1,6 +1,5 @@
 #include "Game.h"
 #include "TextureManager.h"
-#include "Map.h"
 #include "Components.h"
 #include "Button.h"
 #include "CardVector.h"
@@ -9,7 +8,6 @@
 #include <thread>
 #include <chrono>
 
-Map* map;
 Mouse* mouse;
 Button* endTurnButton;
 Button* player1Button;
@@ -18,16 +16,18 @@ CardVector* player1Hand;
 CardVector* player2Hand;
 CardVector* player1Active;
 CardVector* player2Active;
-Card card2, card3, card4;
-Card card1("evil guy", "meanie", 50, Web, ExploitCard);
+Card card1("Eternal Blue", "that big exploit", 75, Web, ExploitCard);
+Card card2("SHA-256", "a quantum-proof encryption method", 50, Web, DefenseCard);
+Card card3("Firewall", "a basic system to manage ports", 25, Web, DefenseCard);
+Card card4("SQL injection", "the most dangerous web vulnerability", 50, Web, ExploitCard);
+Card card5("Server Side Request Forgery", "yk what it is", 50, Web, ExploitCard);
 Manager manager;
 Entity& player1(manager.addEntity());
 Entity& player2(manager.addEntity());
 Entity& turnCounter(manager.addEntity());
 Entity& p1BwCounter(manager.addEntity());
 Entity& p2BwCounter(manager.addEntity());
-Entity& deck(manager.addEntity());
-const int drawPileSize = 4;
+const int drawPileSize = 5;
 Card drawPile[drawPileSize];
 
 Button* selectedCardButton;
@@ -73,7 +73,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 		renderer = SDL_CreateRenderer(window, -1, 0);
 		if (renderer) {
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+			SDL_SetRenderDrawColor(renderer, 35, 35, 35, 255);
 			std::cout << "Renderer created!" << std::endl;
 		}
 
@@ -121,19 +121,14 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	player2r->y = player2.getComponent<PositionComponent>().y() + heightSegment;
 	player2Button->setDest(*player2r);
 
-	turnCounter.addComponent<PositionComponent>(widthSegment * 6, heightSegment * .5);
+	turnCounter.addComponent<PositionComponent>(widthSegment * -1, heightSegment * 4);
 	turnCounter.addComponent<TextComponent>("Turn 1");
 
-	p1BwCounter.addComponent<PositionComponent>(widthSegment * 7, heightSegment * 8);
+	p1BwCounter.addComponent<PositionComponent>(widthSegment * 6.5, heightSegment * 8);
 	p1BwCounter.addComponent<TextComponent>("100 Bandwidth");
 
-	p2BwCounter.addComponent<PositionComponent>(widthSegment * 7, heightSegment * .5);
+	p2BwCounter.addComponent<PositionComponent>(widthSegment * 6.5, heightSegment * .5);
 	p2BwCounter.addComponent<TextComponent>("100 Bandwidth");
-
-	int deckWidth = 128;
-	int deckHeight = 192;
-	deck.addComponent<PositionComponent>(widthSegment * 1, heightSegment * 4.5 - (deckHeight / 2));
-	deck.addComponent<SpriteComponent>(deckWidth, deckHeight, "card.png");
 
 	player1Hand = new CardVector(4, heightSegment * 10 - 288);
 	player1Hand->setX(widthSegment / 2);
@@ -147,21 +142,21 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	player2Active = new CardVector(6, heightSegment * 2.5);
 	player2Active->setX(widthSegment * 3.25);
 
-	card1.setTex("attackCard.png");
-	card2.setTex("card.png");
-	card3.setTex("wifi.png");
-	card4.setTex("testHand.png");
-	card2.setCardName("circle card thingy");
-	card3.setCardName("wifi");
-	card4.setCardName("kibby :3");
-	card1.setDamage(50);
-	card2.setHealth(50);
-	card3.setHealth(75);
-	card4.setHealth(90);
+	card1.setTex("eternalBlue.png");
+	card2.setTex("sha256.png");
+	card3.setTex("firewall.png");
+	card4.setTex("SQLi.png");
+	card5.setTex("ssrf.png");
+	card1.setDamage(100);
+	card2.setHealth(100);
+	card3.setHealth(50);
+	card4.setDamage(75);
+	card5.setDamage(75);
 	drawPile[0] = card1;
 	drawPile[1] = card2;
 	drawPile[2] = card3;
 	drawPile[3] = card4;
+	drawPile[4] = card5;
 
 	//fill each hand with random cards!
 	for (int i = 0; i < 4; i++) player1Hand->addCard(drawPile[rand() % drawPileSize]);
@@ -193,15 +188,16 @@ void Game::handleEvents() {
 				if ( (!player1Active->hasDefense()) && clickedCards[0] != nullptr && clickedCardsTeam[0] == 2 
 					&& turn % 2 == 0 && player2.getComponent<PlayerInfoComponent>().getBandwidth() >= clickedCards[0]->getBandwidthCost()) {
 					clickedCards[0]->Attack(player1);
-	
 					//decrement bandwidth
-					player2.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * selectedCardVector->getCard(selectedCardIndex).getBandwidthCost());
+					player2.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * clickedCards[0]->getBandwidthCost());
 					//update bandwidth counter
 					string tmpString2 = to_string(player2.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
 					p2BwCounter.getComponent<TextComponent>().setName(tmpString2.c_str());
 
 					string tmpstr = "" + to_string(player1.getComponent<PlayerInfoComponent>().getHealth()) + " HP";
 					player1.getComponent<TextComponent>().setName(tmpstr.c_str());
+					clickedCards[0] = nullptr;
+					clickedCards[1] = nullptr;
 					endTurn();
 				}
 				break;
@@ -219,6 +215,8 @@ void Game::handleEvents() {
 
 					string tmpstr = "" + to_string(player2.getComponent<PlayerInfoComponent>().getHealth()) + " HP";
 					player2.getComponent<TextComponent>().setName(tmpstr.c_str());
+					clickedCards[0] = nullptr;
+					clickedCards[1] = nullptr;
 					endTurn();
 				}
 				break;
@@ -387,6 +385,7 @@ void Game::win(int winner) {
 	tmpRect->w = 1920;
 	tmpRect->h = 1080;
 	TextureManager::Draw(TextureManager::LoadTexture("winScreen.png"), *tmpRect);
+	render();
 	std::this_thread::sleep_for(std::chrono::seconds(5));
 	isRunning = false;
 }
@@ -396,6 +395,10 @@ void Game::endTurn() {
 	if (player1.getComponent<PlayerInfoComponent>().getHealth() <= 0) {
 		std::cout << "PLAYER 2 WINS!!!" << std::endl;
 		win(2);
+	}
+	else if (player2.getComponent<PlayerInfoComponent>().getHealth() <= 0) {
+		std::cout << "PLAYER 1 WINS!!!" << std::endl;
+		win(1);
 	}
 	
 	//draw!
