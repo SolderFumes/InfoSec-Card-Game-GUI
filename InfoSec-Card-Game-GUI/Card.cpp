@@ -1,8 +1,8 @@
 #include "Card.h"
 namespace {
-    const int cardWidth = 160;
-    const int cardHeight = 240;
-    const int cardGap = 50;
+    const int cardWidth = 128;
+    const int cardHeight = 192;
+    const int cardGap = 25;
 }
 
 using namespace std;
@@ -13,14 +13,16 @@ Card::Card() {
     cardDescription = DEFAULT_DESCRIPTION;
     bandwidthCost = DEFAULT_BANDWIDTH_COST;
     attackSurface = DEFAULT_ATTACK_SURFACE;
+    category = DEFAULT_CATEGORY;
 }
 
 Card::Card(string newName, string newDescription,
-    int newBandwidthCost, string newImageLink, AttackSurface newAttackSurface) {
+    int newBandwidthCost, AttackSurface newAttackSurface, Category newCategory) {
     cardName = newName;
     cardDescription = newDescription;
     bandwidthCost = newBandwidthCost;
     attackSurface = newAttackSurface;
+    category = newCategory;
 }
 
 //SETTERS
@@ -39,6 +41,24 @@ void Card::setBandwidthCost(int newBandwidthCost) {
     }
 }
 
+void Card::setHealth(int newHealth) {
+    if (category == DefenseCard) {
+        health = newHealth;
+    }
+    else {
+        throw new exception("tried to set the health of an ExploitCard");
+    }
+}
+
+void Card::setDamage(int newDamage) {
+    if (category == ExploitCard) {
+        damage = newDamage;
+    }
+    else {
+        throw new exception("tried to set the damage of a DefenseCard");
+    }
+}
+
 void Card::setTex(const char* path) {
     tex = TextureManager::LoadTexture(path);
 }
@@ -47,6 +67,18 @@ void Card::setAttackSurface(AttackSurface newAttackSurface) { attackSurface = ne
 
 void Card::draw(SDL_Rect& destRect) {
     TextureManager::Draw(tex, destRect);
+}
+
+void Card::Attack(Card& target) {
+    if (!target.category == DefenseCard) {
+        throw new exception("tried to attack an exploitcard");
+    }
+    else {
+        target.reduceCardHealth(damage);
+    }
+}
+void Card::Attack(Entity& target) {
+    target.getComponent<PlayerInfoComponent>().incrementHealth(-damage);
 }
 
 //OTHER METHODS

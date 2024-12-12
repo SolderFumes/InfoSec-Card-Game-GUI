@@ -10,6 +10,7 @@ public:
 
 	void update(Mouse& mouse);
 	void draw();
+	void setDest(SDL_Rect);
 
 	SDL_Texture* tex;
 	SDL_Rect srcRect;

@@ -4,6 +4,7 @@
 #include <vector>
 #include <iostream>
 #include "Card.h"
+#include "Button.h"
 
 //This class is a wrapper for a vector of cards with some special methods.
 
@@ -11,18 +12,25 @@ class CardVector {
 
 public:
 	CardVector(int size, int ypos);
-	void addCard(Card& cardToAdd);
+	void addCard(Card cardToAdd);
 	void removeCard(int index);
 	std::vector<Card>& getCardsVector() { return cards; };
 	Card getCard(int index);
+	Button& getButton(int index);
+	int size() { return cards.size(); };
 
-	void update();
+	void setX(int x) { xpos = x; }
+
+	//Button& getClosestButton(Mouse& mouse);
+
+	void update(Mouse&);
 	void draw();
 
 private:
 	std::vector<Card> cards;
+	std::vector<Button> buttons;
 	size_t maxSize;
-	int ypos;
+	int xpos, ypos;
 	const int cardWidth = 160;
 	const int cardHeight = 240;
 	const int cardGap = 50;

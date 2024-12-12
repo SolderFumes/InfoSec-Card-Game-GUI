@@ -5,16 +5,18 @@ CardVector::CardVector(int size, int ypos) {
 	this->ypos = ypos;
 }
 
-void CardVector::addCard(Card& cardToAdd) {
+void CardVector::addCard(Card cardToAdd) {
 	if (cards.size() < maxSize) {
 		cards.push_back(cardToAdd);
+		Button newButton;
+		buttons.push_back(newButton);
 	}
 	else {
 		std::cout << "Cards vector full. Cannot add card." << std::endl;
 	}
 }
 void CardVector::removeCard(int index) {
-	if (index > 0 && index < cards.size()) {
+	if (index >= 0 && index < cards.size()) {
 		cards.erase(cards.begin() + index);
 	}
 	else {
@@ -22,7 +24,7 @@ void CardVector::removeCard(int index) {
 	}
 }
 Card CardVector::getCard(int index) {
-	if (index > 0 && index < cards.size()) {
+	if (index >= 0 && index < cards.size()) {
 		return cards.at(index);
 	}
 	else {
@@ -30,13 +32,46 @@ Card CardVector::getCard(int index) {
 	}
 }
 
+Button& CardVector::getButton(int index) {
+	if (index >= 0 && index < cards.size()) {
+		return buttons.at(index);
+	}
+	else {
+		throw std::out_of_range("getButton index out of bounds!");
+	}
+}
+
+void CardVector::update(Mouse& mouse) {
+	for (Button& b : buttons) b.update(mouse);
+}
+
+//Button& CardVector::getClosestButton(Mouse& mouse) {
+//	int closestIndex = 0;
+//	int lowestDifference = INT_MAX;
+//	//find the difference between the mouse's position and the card's position
+//	int totalMousePos = mouse.getCollisionPoint()->x + mouse.getCollisionPoint()->y;
+//	for (int i = 0; i < cards.size(); i++) {
+//		
+//		int totalCardPos = cards.at(i).getX() + cards.at(i).getY();
+//		int difference = fabs(totalMousePos - totalCardPos);
+//		if (difference < lowestDifference) {
+//			lowestDifference = difference;
+//			closestIndex = i;
+//		}
+//	}
+//	return buttons.at(closestIndex);
+//}
+
 void CardVector::draw() {
 	for (int i = 0; i < cards.size(); i++) {
 		SDL_Rect destRect;
-		destRect.x = Game::widthSegment/2 + (i * cardWidth);
+		destRect.x = xpos + (i * cardWidth);
 		destRect.y = ypos;
 		destRect.w = cardWidth;
 		destRect.h = cardHeight;
+		cards.at(i).setX(destRect.x);
+		cards.at(i).setY(destRect.y);
+		buttons.at(i).setDest(destRect);
 		cards.at(i).draw(destRect);
 	}
 }

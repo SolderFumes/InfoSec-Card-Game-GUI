@@ -14,13 +14,14 @@ DefenseCard::DefenseCard() : Card() {
 }
 
 DefenseCard::DefenseCard(string newName, string newDescription, int newBandwidthCost,
-    string newImageLink, AttackSurface newAttackSurface, int newHealth) :
-    Card(newName, newDescription, newBandwidthCost, newImageLink, newAttackSurface) {
+    AttackSurface newAttackSurface, int newHealth, string texturePath) :
+    Card(newName, newDescription, newBandwidthCost, newAttackSurface, texturePath) {
     cardHealth = newHealth;
 }
 
 //GETTER
 int DefenseCard::getCardHealth() const { return cardHealth; }
+string DefenseCard::getType() { return "DefenseCard"; }
 
 //SETTER
 void DefenseCard::setCardHealth(int newHealth) { cardHealth = newHealth; }

@@ -136,7 +136,6 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Card.cpp" />
     <ClCompile Include="CardVector.cpp" />
-    <ClCompile Include="DefenseCard.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="main.cpp" />
@@ -148,7 +147,6 @@
     <ClInclude Include="Card.h" />
     <ClInclude Include="CardVector.h" />
     <ClInclude Include="Components.h" />
-    <ClInclude Include="DefenseCard.h" />
     <ClInclude Include="ECS.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />

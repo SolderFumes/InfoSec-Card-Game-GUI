@@ -6,10 +6,11 @@ class DefenseCard : public Card {
 public:
     //CONSTRUCTORS
     DefenseCard();
-    DefenseCard(string, string, int, string, AttackSurface, int);
+    DefenseCard(string, string, int, AttackSurface, int, string);
 
     //GETTER
     int getCardHealth() const;
+    string getType() override;
 
     //SETTER
     void setCardHealth(int);
