@@ -6,11 +6,14 @@
 #include "CardVector.h"
 #include <cmath>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 Map* map;
 Mouse* mouse;
-Button* startButton;
 Button* endTurnButton;
+Button* player1Button;
+Button* player2Button;
 CardVector* player1Hand;
 CardVector* player2Hand;
 CardVector* player1Active;
@@ -21,6 +24,8 @@ Manager manager;
 Entity& player1(manager.addEntity());
 Entity& player2(manager.addEntity());
 Entity& turnCounter(manager.addEntity());
+Entity& p1BwCounter(manager.addEntity());
+Entity& p2BwCounter(manager.addEntity());
 Entity& deck(manager.addEntity());
 const int drawPileSize = 4;
 Card drawPile[drawPileSize];
@@ -48,7 +53,7 @@ Game::~Game() {
 }
 
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
-	srand(time(NULL));
+	srand(time(0));
 
 	Game::widthSegment = width / 10;
 	Game::heightSegment = height / 10;
@@ -79,7 +84,6 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	}
 	
 	mouse = new Mouse();
-	startButton = new Button();
 	endTurnButton = new Button(TextureManager::LoadTexture("endTurn.png"));
 	SDL_Rect* endTurnDest = new SDL_Rect;
 	endTurnDest->x = widthSegment * 9;
@@ -89,25 +93,42 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	endTurnButton->setDest(*endTurnDest);
 	//this will be how we select which texture to use
 	//a higher y value will select a different tile when sprite sheet is oriented correctly
-	startButton->srcRect.y = 0;
-	startButton->destRect.x = width / 2;
-	startButton->destRect.y = height / 2;
 	
 	//ecs implementation
 	player1.addComponent<PositionComponent>();
 	player1.getComponent<PositionComponent>().setPos((int)(widthSegment * 4.5), heightSegment * 8);
 	//!TODO implement player method to generate a texture to use for the healthbar 
 	//! OR make health component
-	player1.addComponent<SpriteComponent>(96, 96, "healthBar.png");
 	player1.addComponent<PlayerInfoComponent>(250, 100, "John Pork");
+	player1.addComponent<TextComponent>("250 HP");
+
+	player1Button = new Button(TextureManager::LoadTexture("player1.png"), 225, 225);
+	SDL_Rect* player1r = new SDL_Rect;
+	player1r->w = player1r->h = (255 * .75);
+	player1r->x = player1.getComponent<PositionComponent>().x();
+	player1r->y = player1.getComponent<PositionComponent>().y() - heightSegment;
+	player1Button->setDest(*player1r);
 
 	//!TODO rearrange this!
-	player2.addComponent<PositionComponent>(widthSegment * 4.5, heightSegment * .5);
-	player2.addComponent<SpriteComponent>(96, 96, "healthBar.png");
+	player2.addComponent<PositionComponent>(widthSegment * 4.5, heightSegment * 0);
 	player2.addComponent<PlayerInfoComponent>(250, 100, "Hawk 2... uhhhhh");
+	player2.addComponent<TextComponent>("250 HP");
 
-	turnCounter.addComponent<PositionComponent>(widthSegment * 8, heightSegment * .5);
+	player2Button = new Button(TextureManager::LoadTexture("player2.png"), 201, 200);
+	SDL_Rect* player2r = new SDL_Rect;
+	player2r->w = player2r->h = (200 * .75);
+	player2r->x = player2.getComponent<PositionComponent>().x();
+	player2r->y = player2.getComponent<PositionComponent>().y() + heightSegment;
+	player2Button->setDest(*player2r);
+
+	turnCounter.addComponent<PositionComponent>(widthSegment * 6, heightSegment * .5);
 	turnCounter.addComponent<TextComponent>("Turn 1");
+
+	p1BwCounter.addComponent<PositionComponent>(widthSegment * 7, heightSegment * 8);
+	p1BwCounter.addComponent<TextComponent>("100 Bandwidth");
+
+	p2BwCounter.addComponent<PositionComponent>(widthSegment * 7, heightSegment * .5);
+	p2BwCounter.addComponent<TextComponent>("100 Bandwidth");
 
 	int deckWidth = 128;
 	int deckHeight = 192;
@@ -168,8 +189,39 @@ void Game::handleEvents() {
 			if (mouseClicked) {
 				break;
 			}
-			if (startButton->isSelected) {
-				std::cout << "Start button clicked!" << std::endl;
+			if (player1Button->isSelected) {
+				if ( (!player1Active->hasDefense()) && clickedCards[0] != nullptr && clickedCardsTeam[0] == 2 
+					&& turn % 2 == 0 && player2.getComponent<PlayerInfoComponent>().getBandwidth() >= clickedCards[0]->getBandwidthCost()) {
+					clickedCards[0]->Attack(player1);
+	
+					//decrement bandwidth
+					player2.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * selectedCardVector->getCard(selectedCardIndex).getBandwidthCost());
+					//update bandwidth counter
+					string tmpString2 = to_string(player2.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+					p2BwCounter.getComponent<TextComponent>().setName(tmpString2.c_str());
+
+					string tmpstr = "" + to_string(player1.getComponent<PlayerInfoComponent>().getHealth()) + " HP";
+					player1.getComponent<TextComponent>().setName(tmpstr.c_str());
+					endTurn();
+				}
+				break;
+			}
+			if (player2Button->isSelected) {
+				if ( (!player2Active->hasDefense()) && clickedCards[0] != nullptr && clickedCardsTeam[0] == 1 
+					&& turn % 2 != 0 && player1.getComponent<PlayerInfoComponent>().getBandwidth() >= clickedCards[0]->getBandwidthCost()) {
+					clickedCards[0]->Attack(player2);
+					//decrenement bw
+					//decrement bandwidth
+					player1.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * clickedCards[0]->getBandwidthCost());
+					//update bandwidth
+					string tmpString1 = to_string(player1.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+					p1BwCounter.getComponent<TextComponent>().setName(tmpString1.c_str());
+
+					string tmpstr = "" + to_string(player2.getComponent<PlayerInfoComponent>().getHealth()) + " HP";
+					player2.getComponent<TextComponent>().setName(tmpstr.c_str());
+					endTurn();
+				}
+				break;
 			}
 			if (endTurnButton->isSelected) {
 				std::cout << "ending turn! :D" << std::endl;
@@ -239,7 +291,15 @@ void Game::handleLogic() {
 	if (selectedCardVector == player1Hand && turn % 2 != 0) {
 		//if we clicked on a defense card, play it
 		if (selectedCardVector->getCard(selectedCardIndex).getCategory() == DefenseCard) {
-			if (player1Active->size() < 6) {
+			if (player1Active->size() < 6 && player1.getComponent<PlayerInfoComponent>().getBandwidth() >= 
+				selectedCardVector->getCard(selectedCardIndex).getBandwidthCost()) {
+
+				//decrement bandwidth
+				player1.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * selectedCardVector->getCard(selectedCardIndex).getBandwidthCost());
+				//update bandwidth counter
+				string tmpString1 = to_string(player1.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+				p1BwCounter.getComponent<TextComponent>().setName(tmpString1.c_str());
+
 				player1Active->addCard(selectedCardVector->getCard(selectedCardIndex));
 				selectedCardVector->removeCard(selectedCardIndex);
 				actionQueued = false;
@@ -258,7 +318,15 @@ void Game::handleLogic() {
 	// try to attack it!
 	// also verifying if we are attacking the right team's cards
 	else if (selectedCardVector == player2Active) {
-		if (clickedCards[0] != nullptr && clickedCardsTeam[0] == 1) {
+		if (clickedCards[0] != nullptr && clickedCardsTeam[0] == 1 && player1.getComponent<PlayerInfoComponent>().getBandwidth() >=
+			clickedCards[0]->getBandwidthCost()) {
+
+			//decrement bandwidth
+			player1.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * clickedCards[0]->getBandwidthCost());
+			//update bandwidth
+			string tmpString1 = to_string(player1.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+			p1BwCounter.getComponent<TextComponent>().setName(tmpString1.c_str());
+
 			clickedCards[0]->Attack(*(selectedCardVector->getCardPtr(selectedCardIndex)));
 			player1Hand->removeCard(clickedCardsIndex[0]);
 			clickedCards[0] = nullptr;
@@ -270,7 +338,14 @@ void Game::handleLogic() {
 	}
 	else if (selectedCardVector == player2Hand && turn % 2 == 0) {
 		if (selectedCardVector->getCard(selectedCardIndex).getCategory() == DefenseCard) {
-			if (player2Active->size() < 6) {
+			if (player2Active->size() < 6 && player2.getComponent<PlayerInfoComponent>().getBandwidth() >=
+				selectedCardVector->getCard(selectedCardIndex).getBandwidthCost()) {
+				//decrement bandwidth
+				player2.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * selectedCardVector->getCard(selectedCardIndex).getBandwidthCost());
+				//update bandwidth counter
+				string tmpString2 = to_string(player2.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+				p2BwCounter.getComponent<TextComponent>().setName(tmpString2.c_str());
+				
 				player2Active->addCard(selectedCardVector->getCard(selectedCardIndex));
 				selectedCardVector->removeCard(selectedCardIndex);
 				actionQueued = false;
@@ -284,7 +359,15 @@ void Game::handleLogic() {
 		}
 	}
 	else if (selectedCardVector == player1Active) {
-		if (clickedCards[0] != nullptr && clickedCardsTeam[0] == 2) {
+		if (clickedCards[0] != nullptr && clickedCardsTeam[0] == 2 && player2.getComponent<PlayerInfoComponent>().getBandwidth() >=
+			clickedCards[0]->getBandwidthCost()) {
+
+			//decrement bandwidth
+			player2.getComponent<PlayerInfoComponent>().incrementBandwidth(-1 * clickedCards[0]->getBandwidthCost());
+			//update bandwidth counter
+			string tmpString2 = to_string(player2.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+			p2BwCounter.getComponent<TextComponent>().setName(tmpString2.c_str());
+
 			clickedCards[0]->Attack(*(selectedCardVector->getCardPtr(selectedCardIndex)));
 			player2Hand->removeCard(clickedCardsIndex[0]);
 			clickedCards[0] = nullptr;
@@ -297,19 +380,43 @@ void Game::handleLogic() {
 	}
 }
 
+void Game::win(int winner) {
+
+	SDL_Rect* tmpRect = new SDL_Rect;
+	tmpRect->x = tmpRect->y = 0;
+	tmpRect->w = 1920;
+	tmpRect->h = 1080;
+	TextureManager::Draw(TextureManager::LoadTexture("winScreen.png"), *tmpRect);
+	std::this_thread::sleep_for(std::chrono::seconds(5));
+	isRunning = false;
+}
+
 void Game::endTurn() {
+	//check if the game is over!
+	if (player1.getComponent<PlayerInfoComponent>().getHealth() <= 0) {
+		std::cout << "PLAYER 2 WINS!!!" << std::endl;
+		win(2);
+	}
+	
 	//draw!
 	//if its p2's turn that just finished..
 	if (turn % 2 == 0) {
 		//deal both players! this is more card-game-esque imo
 		if (player1Hand->size() < 4) {
 			player1Hand->addCard(drawPile[rand() % drawPileSize]);
-			std::cout << "Dealt player 2 a card!" << std::endl;
+			std::cout << "Dealt player 1 a card!" << std::endl;
 		}
 		if (player2Hand->size() < 4) {
 			player2Hand->addCard(drawPile[rand() % drawPileSize]);
 			std::cout << "Dealt player 2 a card!" << std::endl;
 		}
+
+		player1.getComponent<PlayerInfoComponent>().incrementBandwidth(25);
+		player2.getComponent<PlayerInfoComponent>().incrementBandwidth(25);
+		string tmpString1 = to_string(player1.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+		string tmpString2 = to_string(player2.getComponent<PlayerInfoComponent>().getBandwidth()) + " Bandwidth";
+		p1BwCounter.getComponent<TextComponent>().setName(tmpString1.c_str());
+		p2BwCounter.getComponent<TextComponent>().setName(tmpString2.c_str());
 	}
 	
 	//everything from current turn is done!
@@ -324,8 +431,9 @@ void Game::update() {
 	but calling the update() functions of other objects
 	*/
 	manager.refresh();
-	startButton->update(*mouse);
 	endTurnButton->update(*mouse);
+	player1Button->update(*mouse);
+	player2Button->update(*mouse);
 	player1Hand->update(*mouse);
 	player2Hand->update(*mouse);
 	player1Active->update(*mouse);
@@ -349,8 +457,9 @@ void Game::render() {
 	player2Hand->draw();
 	player1Active->draw();
 	player2Active->draw();
-	startButton->draw();
 	endTurnButton->draw();
+	player1Button->draw();
+	player2Button->draw();
 	//draw the mouse last so it's on top of everything!
 	mouse->draw();
 	SDL_RenderPresent(renderer);

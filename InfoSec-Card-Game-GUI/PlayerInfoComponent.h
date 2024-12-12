@@ -31,7 +31,6 @@ public:
 	}
 
 	void init() override {
-		sprite = &entity->getComponent<SpriteComponent>();
 		position = &entity->getComponent<PositionComponent>();
 		//draw a different texture based on the health
 
@@ -69,7 +68,6 @@ public:
 	}
 private:
 	PositionComponent* position;
-	SpriteComponent* sprite;
 	int health;
 	int bandwidth;
 	const char* name;

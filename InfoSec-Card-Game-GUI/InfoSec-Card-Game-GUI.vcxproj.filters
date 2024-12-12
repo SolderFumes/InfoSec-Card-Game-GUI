@@ -118,6 +118,15 @@
     <Image Include="endTurn.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="player1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="player2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="winScreen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Font Include="binchrt.ttf" />

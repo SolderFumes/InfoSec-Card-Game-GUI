@@ -19,6 +19,14 @@ Button::Button(SDL_Texture* newTex) {
 	destRect.w = 128;*/
 	
 }
+Button::Button(SDL_Texture* newTex, int height, int width) {
+	tex = newTex;
+
+	srcRect.h = height;
+	srcRect.w = width;
+
+	srcRect.x = srcRect.y = 0;
+}
 
 Button::Button() {
 	tex = TextureManager::LoadTexture("blank.png");
@@ -38,7 +46,7 @@ void Button::update(Mouse& mouse) {
 		//version of our button.
 		//!TODO change the sprite sheet to have selected button on x axis so that Y axis can be used to iterate
 		//! through different buttons :)
-		srcRect.x = 32;
+		srcRect.x = srcRect.w;
 	}
 	else {
 		isSelected = false;

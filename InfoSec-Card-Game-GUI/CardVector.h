@@ -18,6 +18,7 @@ public:
 	Card getCard(int index);
 	Card* getCardPtr(int index);
 	Button& getButton(int index);
+	bool hasDefense();
 	int size() { return cards.size(); };
 
 	void setX(int x) { xpos = x; }
@@ -32,8 +33,8 @@ private:
 	std::vector<Button> buttons;
 	size_t maxSize;
 	int xpos, ypos;
-	const int cardWidth = 160;
-	const int cardHeight = 240;
+	const int cardWidth = 120;
+	const int cardHeight = 180;
 	const int cardGap = 50;
 };
 

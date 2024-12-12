@@ -50,6 +50,16 @@ Button& CardVector::getButton(int index) {
 	}
 }
 
+bool CardVector::hasDefense() {
+	for (int i = 0; i < cards.size(); i++) {
+		if (cards.at(i).getCategory() == DefenseCard) {
+			std::cout << "Sorry! This player has defense!" << std::endl;
+			return true;
+		}
+	}
+	return false;
+}
+
 void CardVector::update(Mouse& mouse) {
 	for (Button& b : buttons) b.update(mouse);
 }

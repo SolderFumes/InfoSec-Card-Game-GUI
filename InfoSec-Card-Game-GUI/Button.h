@@ -7,6 +7,7 @@
 class Button {
 public:
 	Button(SDL_Texture* newTex);
+	Button(SDL_Texture* newTex, int height, int width);
 	Button();
 
 	void update(Mouse& mouse);

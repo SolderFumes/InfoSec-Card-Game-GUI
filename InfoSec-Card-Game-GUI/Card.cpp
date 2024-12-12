@@ -1,9 +1,5 @@
 #include "Card.h"
-namespace {
-    const int cardWidth = 128;
-    const int cardHeight = 192;
-    const int cardGap = 25;
-}
+
 
 using namespace std;
 
@@ -86,6 +82,7 @@ void Card::Attack(Card& target) {
     }
 }
 void Card::Attack(Entity& target) {
+    std::cout << "Attacking " << target.getComponent<PlayerInfoComponent>().getName() << "!" << std::endl;
     target.getComponent<PlayerInfoComponent>().incrementHealth(-damage);
 }
 

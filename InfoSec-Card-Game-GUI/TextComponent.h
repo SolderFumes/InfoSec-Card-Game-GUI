@@ -38,7 +38,7 @@ public:
 
 		Message_rect.w = Game::widthSegment; // controls the width of the rect
 		Message_rect.h = Game::heightSegment; // controls the height of the rect
-		Message_rect.x = position->x();  //controls the rect's x coordinate 
+		Message_rect.x = position->x() + 2*Game::widthSegment;  //controls the rect's x coordinate 
 		Message_rect.y = position->y(); // controls the rect's y coordinte
 
 	}
@@ -68,7 +68,7 @@ public:
 
 		Message_rect.w = Game::widthSegment; // controls the width of the rect
 		Message_rect.h = Game::heightSegment; // controls the height of the rect
-		Message_rect.x = position->x();  //controls the rect's x coordinate 
+		Message_rect.x = position->x() + 2*Game::widthSegment;  //controls the rect's x coordinate 
 		Message_rect.y = position->y(); // controls the rect's y coordinte
 		
 		TTF_CloseFont(font);

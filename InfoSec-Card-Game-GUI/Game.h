@@ -21,6 +21,7 @@ public:
 	void handleEvents();
 	void handleLogic();
 	void endTurn();
+	void win(int winner);
 	void update();
 	void render();
 	void clean();
