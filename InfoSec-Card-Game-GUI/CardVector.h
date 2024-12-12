@@ -16,6 +16,7 @@ public:
 	void removeCard(int index);
 	std::vector<Card>& getCardsVector() { return cards; };
 	Card getCard(int index);
+	Card* getCardPtr(int index);
 	Button& getButton(int index);
 	int size() { return cards.size(); };
 

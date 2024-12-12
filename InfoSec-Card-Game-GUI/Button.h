@@ -6,6 +6,7 @@
 
 class Button {
 public:
+	Button(SDL_Texture* newTex);
 	Button();
 
 	void update(Mouse& mouse);

@@ -155,12 +155,15 @@
     <ClInclude Include="PlayerInfoComponent.h" />
     <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
+    <ClInclude Include="TextComponent.h" />
     <ClInclude Include="TextureManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="attackCard.png" />
     <Image Include="card.png" />
     <Image Include="cursor.png" />
     <Image Include="dirt.png" />
+    <Image Include="endTurn.png" />
     <Image Include="grass.png" />
     <Image Include="healthBar.png" />
     <Image Include="spriteSheet.png" />

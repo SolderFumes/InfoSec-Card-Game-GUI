@@ -65,15 +65,23 @@ void Card::setTex(const char* path) {
 
 void Card::setAttackSurface(AttackSurface newAttackSurface) { attackSurface = newAttackSurface; }
 
-void Card::draw(SDL_Rect& destRect) {
-    TextureManager::Draw(tex, destRect);
+bool Card::update() {
+    if (health <= 0 && category == DefenseCard) {
+        return true;
+    }
+    return false;
 }
+
+//void Card::draw(SDL_Rect& destRect) {
+//    TextureManager::Draw(tex, destRect);
+//}
 
 void Card::Attack(Card& target) {
     if (!target.category == DefenseCard) {
         throw new exception("tried to attack an exploitcard");
     }
     else {
+        std::cout << cardName << " attacking " << target.getCardName() << std::endl;
         target.reduceCardHealth(damage);
     }
 }

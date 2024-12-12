@@ -33,11 +33,6 @@ public:
 	void init() override {
 		sprite = &entity->getComponent<SpriteComponent>();
 		position = &entity->getComponent<PositionComponent>();
-	};
-	void update() override {
-		
-	};
-	void draw() override {
 		//draw a different texture based on the health
 
 		// this is the color in rgb format,
@@ -54,17 +49,22 @@ public:
 			std::cout << TTF_GetError() << std::endl;
 		}
 		// now you can convert it into a texture
-		SDL_Texture* Message = SDL_CreateTextureFromSurface(Game::renderer, surfaceMessage);
+		Message = SDL_CreateTextureFromSurface(Game::renderer, surfaceMessage);
 
-		SDL_Rect Message_rect; //create a rect
 		Message_rect.w = Game::widthSegment * 2; // controls the width of the rect
 		Message_rect.h = Game::heightSegment; // controls the height of the rect
 		int centeredxpos = Game::widthSegment * 5;
 		centeredxpos -= Message_rect.w / 2;
 		Message_rect.x = centeredxpos;  //controls the rect's x coordinate 
-		Message_rect.y = (int) (position->y() * 1.1); // controls the rect's y coordinte
-		
+		Message_rect.y = (int)(position->y() * 1.1); // controls the rect's y coordinte
+
 		TTF_CloseFont(font);
+	};
+	void update() override {
+		
+	};
+	void draw() override {
+		
 		TextureManager::Draw(Message, Message_rect);
 	}
 private:
@@ -73,6 +73,8 @@ private:
 	int health;
 	int bandwidth;
 	const char* name;
+	SDL_Texture* Message;
+	SDL_Rect Message_rect;
 };
 
 #endif /* PLAYER_INFO_COMPONENT_H */

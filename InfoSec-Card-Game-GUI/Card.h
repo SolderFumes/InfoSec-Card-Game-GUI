@@ -33,6 +33,7 @@ public:
     int getBandwidthCost() const { return bandwidthCost; };
     AttackSurface getAttackSurface() const { return attackSurface; };
     Category getCategory() const { return category; }
+    SDL_Texture* getTex() { return tex; }
     int getX() { return xpos; };
     int getY() { return ypos; };
     //SETTERS
@@ -59,7 +60,8 @@ public:
     string toString() const;
 
 
-    void draw(SDL_Rect& destRect);
+    //void draw(SDL_Rect& destRect);
+    bool update();
 
 private:
 	string cardName;

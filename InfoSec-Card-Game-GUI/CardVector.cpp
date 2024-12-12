@@ -8,7 +8,7 @@ CardVector::CardVector(int size, int ypos) {
 void CardVector::addCard(Card cardToAdd) {
 	if (cards.size() < maxSize) {
 		cards.push_back(cardToAdd);
-		Button newButton;
+		Button newButton(cardToAdd.getTex());
 		buttons.push_back(newButton);
 	}
 	else {
@@ -18,6 +18,7 @@ void CardVector::addCard(Card cardToAdd) {
 void CardVector::removeCard(int index) {
 	if (index >= 0 && index < cards.size()) {
 		cards.erase(cards.begin() + index);
+		buttons.erase(buttons.begin() + index);
 	}
 	else {
 		throw std::out_of_range("removeCard index out of bounds!");
@@ -29,6 +30,14 @@ Card CardVector::getCard(int index) {
 	}
 	else {
 		throw std::out_of_range("getCard index out of bounds!");
+	}
+}
+Card* CardVector::getCardPtr(int index) {
+	if (index >= 0 && index < cards.size()) {
+		return &cards.at(index);
+	}
+	else {
+		throw std::out_of_range("getCardPtr index out of bounds!");
 	}
 }
 
@@ -64,6 +73,12 @@ void CardVector::update(Mouse& mouse) {
 
 void CardVector::draw() {
 	for (int i = 0; i < cards.size(); i++) {
+		if (cards.at(i).update()) {
+			removeCard(i);
+			
+		}
+	}
+	for (int i = 0; i < cards.size(); i++) {
 		SDL_Rect destRect;
 		destRect.x = xpos + (i * cardWidth);
 		destRect.y = ypos;
@@ -72,6 +87,7 @@ void CardVector::draw() {
 		cards.at(i).setX(destRect.x);
 		cards.at(i).setY(destRect.y);
 		buttons.at(i).setDest(destRect);
-		cards.at(i).draw(destRect);
+		buttons.at(i).draw();
+	/*	cards.at(i).draw(destRect);*/
 	}
 }

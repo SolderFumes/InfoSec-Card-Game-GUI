@@ -80,6 +80,9 @@
     <ClInclude Include="Card.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TextComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="dirt.png">
@@ -107,6 +110,12 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="testHand.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="attackCard.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="endTurn.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
